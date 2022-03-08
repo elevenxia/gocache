@@ -2,7 +2,7 @@
 
 ## 简介
 
-`gocache` 是模仿 [`groupcache`](https://github.com/golang/groupcache)（Go 语言版的 `memcached`） 实现的一个分布式缓存系统，为了将**代码量限制在 500 行左右**（`groupcache` 约 **3000 行**），裁剪了部分功能。但总体实现上，还是与 `groupcache` 非常接近的。支持特性有：
+`gocache` 是模仿 [`groupcache`](https://github.com/golang/groupcache)（Go 语言版的 `memcached`） 实现的一个分布式缓存系统，为了将**代码量限制在 500 行左右**（`groupcache` 约 **3000 行**），裁剪了部分功能。支持特性有：
 
 - 采用最近最少访问(Least Recently Used, LRU) 缓存策略
 - 单机缓存和基于 HTTP 的分布式缓存
@@ -37,14 +37,14 @@ wait
 
 ```bash
 $ ./run.sh
-2020/02/16 21:17:43 geecache is running at http://localhost:8001
-2020/02/16 21:17:43 geecache is running at http://localhost:8002
-2020/02/16 21:17:43 geecache is running at http://localhost:8003
-2020/02/16 21:17:43 fontend server is running at http://localhost:9999
+2022/02/16 21:17:43 geecache is running at http://localhost:8001
+2022/02/16 21:17:43 geecache is running at http://localhost:8002
+2022/02/16 21:17:43 geecache is running at http://localhost:8003
+2022/02/16 21:17:43 fontend server is running at http://localhost:9999
 >>> start test
-2020/02/16 21:17:45 [Server http://localhost:8003] Pick peer http://localhost:8001
-2020/02/16 21:17:45 [Server http://localhost:8003] Pick peer http://localhost:8001
-2020/02/16 21:17:45 [Server http://localhost:8003] Pick peer http://localhost:8001
+2022/02/16 21:17:45 [Server http://localhost:8003] Pick peer http://localhost:8001
+2022/02/16 21:17:45 [Server http://localhost:8003] Pick peer http://localhost:8001
+2022/02/16 21:17:45 [Server http://localhost:8003] Pick peer http://localhost:8001
 ...
 630630630
 ```
@@ -58,4 +58,5 @@ $ curl "http://localhost:9999/api?key=kkk"
 kkk not exist
 ```
 
-测试的时候，我们**并发**了 3 个请求 `?key=Tom`，从日志中可以看到，三次均选择了节点 `8001`，这是一致性哈希算法的功劳。
+测试的时候，我们**并发**了 3 个请求 `?key=Tom`，从日志中可以看到，三次均选择了节点 `8001`，符合一致性哈希算法的结果。
+
