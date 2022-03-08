@@ -10,6 +10,48 @@
 - 使用一致性哈希选择节点，实现负载均衡
 - 使用 `protobuf` 优化节点间二进制通信
 
+主要的逻辑为：
+
+```bash
+                            是
+接收 key --> 检查是否被缓存 -----> 返回缓存值
+                |  否                         是
+                |-----> 是否应当从远程节点获取 -----> 与远程节点交互 --> 返回缓存值
+                            |  否
+                            |-----> 调用`回调函数`，获取值并添加到缓存 --> 返回缓存值
+```
+
+## 目录
+
+```go
+├── README.md
+├── go.mod    
+├── go.sum
+├── gocache
+│   ├── byteview.go			  // 缓存值的抽象与封装
+│   ├── cache.go			  // 并发控制
+│   ├── consistenthash
+│   │   ├── consistenthash.go // 一致性哈希
+│   │   └── consistenthash_test.go
+│   ├── go.mod
+│   ├── go.sum
+│   ├── gocache.go			  // 负责与外部交互，控制缓存存储和获取的主流程
+│   ├── gocache_test.go
+│   ├── gocachepb
+│   │   ├── gocachepb.pb.go
+│   │   └── gocachepb.proto
+│   ├── http.go				  // 实现节点间通信
+│   ├── lru
+│   │   ├── lru.go			  // lru 缓存淘汰策略
+│   │   └── lru_test.go
+│   ├── peers.go
+│   └── singleflight
+│       ├── singleflight.go	  // 避免缓存击穿和穿透
+│       └── singleflight_test.go
+├── main.go
+└── run.sh
+```
+
 ## 编译运行
 
 
